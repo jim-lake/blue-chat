@@ -1,8 +1,7 @@
 'use strict';
 
-import EventEmitter from 'event-emitter';
+import EventEmitter from 'events';
 import _ from 'lodash';
-import moment from 'moment';
 import { Buffer } from 'buffer';
 
 import Bluetooth from '../bluetooth.js';
@@ -24,7 +23,7 @@ class BluetoothStore {
   _onBluetoothValueUpdate(data) {
     const { valueBase64 } = data.characteristic;
     if (valueBase64 in this.message_map) {
-      console.log("dup message:",data.characteristic.value);
+      //console.log("dup message:",data.characteristic.value);
     } else {
       const { valueBuffer } = data.characteristic;
       const unixTime = valueBuffer.readUInt32LE(0);
@@ -37,7 +36,6 @@ class BluetoothStore {
         receiveTime: data.time,
         time,
         unixTime,
-        dateMoment: moment(unixTime),
         user,
         text,
       };
@@ -48,7 +46,7 @@ class BluetoothStore {
       if (age_ms < RESEND_TIMEOUT_MS) {
         Bluetooth.sendValue(valueBuffer);
       } else {
-        console.log("old message, not resending age_ms:",age_ms);
+        //console.log("old message, not resending age_ms:",age_ms);
       }
     }
   }

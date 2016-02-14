@@ -1,6 +1,6 @@
 'use strict';
 
-import EventEmitter from 'event-emitter';
+import EventEmitter from 'events';
 
 import storage from '../storage.js';
 import util from '../util.js';

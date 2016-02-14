@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react-native';
-import EventEmitter from 'event-emitter';
+import EventEmitter from 'events';
 import _ from 'lodash';
 import { Buffer } from 'buffer';
 

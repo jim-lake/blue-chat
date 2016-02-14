@@ -55,7 +55,6 @@ export default class Button extends React.Component {
     highlightStyle: View.propTypes.style,
     textStyle: Text.propTypes.style,
   };
-
   static defaultProps = {
     onPress: function() {},
     type: null,
