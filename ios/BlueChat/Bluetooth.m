@@ -201,8 +201,6 @@ static BluetoothResponder *g_sharedInstance = nil;
     [peripheral startAdvertising:@{
       CBAdvertisementDataServiceUUIDsKey: @[_service.UUID]
     }];
-  } else {
-    NSLog(@"peripheralManagerDidUpdateState: not advertising, wierd state.: %lx",peripheral.state);
   }
 }
 
@@ -253,9 +251,9 @@ static BluetoothResponder *g_sharedInstance = nil;
 }
 - (void)peripheralManager:(CBPeripheralManager *)peripheral
   didReceiveWriteRequests:(NSArray<CBATTRequest *> *)requests {
-  NSLog(@"didReceiveWriteRequests: count: %ld",requests.count);
+  //NSLog(@"didReceiveWriteRequests: count: %ld",requests.count);
   for (CBATTRequest *request in requests) {
-    NSLog(@"request: UUID: %@, value: %@, offset: %ld",request.characteristic.UUID,request.value,request.offset);
+    //NSLog(@"request: UUID: %@, value: %@, offset: %ld",request.characteristic.UUID,request.value,request.offset);
     [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
   }
 }
@@ -271,7 +269,6 @@ static BluetoothResponder *g_sharedInstance = nil;
     [central scanForPeripheralsWithServices:@[g_serviceUUID] options:nil];
   } else {
     [_peripheralList removeAllObjects];
-    NSLog(@"centralManagerDidUpdateState: bad state: %lx",central.state);
   }
   [_delegate sendEvent:@"bluetooth.central.state" body:@{
     @"isPoweredOn": [self isPoweredOn],
