@@ -99,7 +99,7 @@ export default class Chat extends React.Component {
     this.setState({ keyboard_height: 0 });
   }
   _onBluetoothChange() {
-    const is_bluetooth_on = Bluetooth.isPoweredOn() || true;
+    const is_bluetooth_on = Bluetooth.isPoweredOn();
     this.setState({ is_bluetooth_on });
   }
 

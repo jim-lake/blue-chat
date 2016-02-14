@@ -189,7 +189,11 @@ static BluetoothResponder *g_sharedInstance = nil;
   return array;
 }
 - (id)isPoweredOn {
+#if TARGET_IPHONE_SIMULATOR
+  return @TRUE;
+#else
   return _centralManager.state == CBCentralManagerStatePoweredOn ? @TRUE : @FALSE;
+#endif
 }
 
 /********************************************************************************************/
