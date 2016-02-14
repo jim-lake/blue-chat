@@ -3,6 +3,8 @@
 
 #import "RCTRootView.h"
 
+//#define DEV_IP_PORT "192.168.1.8:8081"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

@@ -65,6 +65,7 @@ export default class Chat extends React.Component {
       is_bluetooth_on: false,
       message_list: [],
       keyboard_height: 0,
+      connected_peripheral_count: 0,
     };
     this._onBluetoothChange = this._onBluetoothChange.bind(this);
     this._onChatChange = this._onChatChange.bind(this);
@@ -100,7 +101,8 @@ export default class Chat extends React.Component {
   }
   _onBluetoothChange() {
     const is_bluetooth_on = Bluetooth.isPoweredOn();
-    this.setState({ is_bluetooth_on });
+    const connected_peripheral_count = Bluetooth.getConnectedPeripheralCount();
+    this.setState({ is_bluetooth_on, connected_peripheral_count });
   }
 
   _onChatChange() {
@@ -143,6 +145,7 @@ export default class Chat extends React.Component {
       message_list,
       text,
       keyboard_height,
+      connected_peripheral_count,
     } = this.state;
 
     const lines = _.map(message_list,(message,index) => {
@@ -168,6 +171,7 @@ export default class Chat extends React.Component {
     const content = (
       <View style={[styles.container,{ marginBottom: keyboard_height }]}>
         <Header
+          count={connected_peripheral_count}
           user={user}
           showMenu={true}
           onMenuPress={this._onMenuPress.bind(this)}

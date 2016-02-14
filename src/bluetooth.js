@@ -16,6 +16,7 @@ class Bluetooth {
     this.eventEmitter = new EventEmitter();
     this.is_powered_on = false;
     this.is_ready = false;
+    this.connected_peripheral_count = 0;
 
     NativeAppEventEmitter.addListener('bluetooth.peripheral.read',
       this._onPeripheralRead.bind(this));
@@ -29,7 +30,7 @@ class Bluetooth {
         this._onCentralState(state,'startup');
       });
 
-      setInterval(this._checkPeripherials,PERIPHERAL_POLL_MS);
+      setInterval(this._checkPeripherials.bind(this),PERIPHERAL_POLL_MS);
     });
   }
   addListener(event,callback) {
@@ -55,6 +56,13 @@ class Bluetooth {
       this.eventEmitter.emit(CHANGE_EVENT,tag);
     }
   }
+  _onPeripheralCountUpdate(count,tag) {
+    if (this.connected_peripheral_count != count) {
+      this.connected_peripheral_count = count;
+      this.eventEmitter.emit(CHANGE_EVENT,tag);
+    }
+  }
+
   _onPeripheralRead(data) {
     const opts = {
       requestId: data.requestId,
@@ -75,12 +83,19 @@ class Bluetooth {
   }
   _checkPeripherials() {
     BluetoothModule.getPeripheralList((err,peripheral_list) => {
+      let count = 0;
       peripheral_list.forEach((p) => {
-        if (!p.isConnected && !p.isConnecting) {
+        if (p.isConnected) {
+          count++;
+        } else if (!p.isConnecting) {
           BluetoothModule.connectToPeripheral(p.peripheral,(err) => {});
         }
       });
+      this._onPeripheralCountUpdate(count);
     });
+  }
+  getConnectedPeripheralCount() {
+    return this.connected_peripheral_count;
   }
   isReady() {
     return this.is_ready;

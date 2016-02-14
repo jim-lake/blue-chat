@@ -56,6 +56,7 @@ export default class Header extends React.Component {
     user: React.PropTypes.string,
     onMenuPress: React.PropTypes.func,
     onDonePress: React.PropTypes.func,
+    count: React.PropTypes.number,
   };
   static defaultProps = {
     title: "#bluechat",
@@ -65,7 +66,7 @@ export default class Header extends React.Component {
     onDonePress: null,
   };
   render() {
-    const { title, user, onMenuPress, onDonePress } = this.props;
+    const { title, user, onMenuPress, onDonePress, count } = this.props;
 
     let user_text = null;
     if (user) {
@@ -97,10 +98,14 @@ export default class Header extends React.Component {
         </TouchableHighlight>
       );
     }
+    let title_text = title;
+    if (count != undefined) {
+      title_text += " (" + count + ")";
+    }
 
     const content = (
       <View style={styles.wrapper}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{title_text}</Text>
         {user_text}
         {right}
       </View>
